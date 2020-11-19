@@ -12,7 +12,7 @@ Author: Andrew Oliveau (@AndrewOliveau)
 
 ## Pre-Compiled 
 
-* Use the pre-compiled binary <a href="https://github.com/fireeye/OfficePurge/releases/tag/v1.0">here</a>
+* Use the pre-compiled binary in the <a href="https://github.com/fireeye/OfficePurge/releases">Releases</a> section
 
 ## Building Yourself
 
