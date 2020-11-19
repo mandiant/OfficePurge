@@ -50,10 +50,10 @@ The below 3rd party libraries are used in this project.
 
 # EXAMPLES
 
-* OfficePurge.exe -d word -f .\malicious.doc -m NewMacros
-* OfficePurge.exe -d excel -f .\payroll.xls -m Module1
-* OfficePurge.exe -d publisher -f .\donuts.pub -m ThisDocument
-* OfficePurge.exe -d word -f .\malicious.doc -l
+* `OfficePurge.exe -d word -f .\malicious.doc -m NewMacros`
+* `OfficePurge.exe -d excel -f .\payroll.xls -m Module1`
+* `OfficePurge.exe -d publisher -f .\donuts.pub -m ThisDocument`
+* `OfficePurge.exe -d word -f .\malicious.doc -l`
 
 # REFERENCES
 * Didier Steven's VBA purging article <a href="https://blog.nviso.eu/2020/02/25/evidence-of-vba-purging-found-in-malicious-documents/">here</a>
