@@ -1,7 +1,7 @@
 # OfficePurge
 
 VBA purge your Office documents with OfficePurge. VBA purging removes P-code from module streams within Office documents. Documents that only contain source code and no compiled code are more likely to evade AV detection and YARA rules. 
-Read more <a href="https://blog.nviso.eu/2020/02/25/evidence-of-vba-purging-found-in-malicious-documents/">here</a>.
+Read more <a href="https://www.fireeye.com/blog/threat-research/2020/11/purgalicious-vba-macro-obfuscation-with-vba-purging.html">here</a>.
 
 OfficePurge supports VBA purging Microsoft Office Word (.doc), Excel (.xls), and Publisher (.pub) documents. Original and purged documents for each supported file type with a macro that will spawn calc.exe can be found in `sample-data` folder.
 
