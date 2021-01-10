@@ -195,7 +195,15 @@ namespace OfficePurge
 					Console.WriteLine("\n[*] Module offset changed to 0.");
 
 					// Remove performance cache in _VBA_PROJECT stream. Replace the entire stream with _VBA_PROJECT header.
-					byte[] data = Utils.HexToByte("CC-61-FF-FF-00-00-00");
+
+					string b1 = "00";
+					string b2 = "00";
+
+                    Random rnd = new Random();
+					b1 = String.Format("{0:X2}", rnd.Next(0, 255));
+					b2 = String.Format("{0:X2}", rnd.Next(0, 255));
+
+					byte[] data = Utils.HexToByte(String.Format("CC-61-FF-FF-00-{0}-{1}", b1, b2));
 					vbaStorage.GetStream("_VBA_PROJECT").SetData(data);
 					Console.WriteLine("[*] PerformanceCache removed from _VBA_PROJECT stream.");
 
