@@ -199,7 +199,7 @@ namespace OfficePurge
 					string b1 = "00";
 					string b2 = "00";
 
-                    Random rnd = new Random();
+					Random rnd = new Random();
 					b1 = String.Format("{0:X2}", rnd.Next(0, 255));
 					b2 = String.Format("{0:X2}", rnd.Next(0, 255));
 
@@ -212,7 +212,7 @@ namespace OfficePurge
 					{
 						for(int i = 0; i < 10; i++)
                         {
-							string srp = String.Format("__SRP_{1}", i);
+							string srp = String.Format("__SRP_{0}", i);
 							var str = vbaStorage.TryGetStream(srp);
 							if (str != null)
                             {
@@ -222,7 +222,7 @@ namespace OfficePurge
 						
 						Console.WriteLine("[*] SRP streams deleted!");
 					}
-					catch (Exception)
+					catch (Exception e)
 					{
 						Console.WriteLine("[*] No SRP streams found.");
 					}
