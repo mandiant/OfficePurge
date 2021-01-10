@@ -34,23 +34,22 @@ namespace OfficePurge
 			Console.WriteLine(" /  \\(  __)(  __)(  )/ __)(  __)(  _ \\/ )( \\(  _ \\ / __)(  __)");
 			Console.WriteLine("(  O )) _)  ) _)  )(( (__  ) _)  ) __/) \\/ ( )   /( (_ \\ ) _) ");
 			Console.WriteLine(" \\__/(__)  (__)  (__)\\___)(____)(__)  \\____/(__\\_) \\___/(____) v1.0");
-			Console.WriteLine("\n\n Author: Andrew Oliveau\n\n");
+			Console.WriteLine("\n\n Author: Andrew Oliveau\n");
 			Console.WriteLine(" DESCRIPTION:");
 			Console.WriteLine("\n\tOfficePurge is a C# tool that VBA purges malicious Office documents. ");
-			Console.WriteLine("\n\tVBA purging removes P-code from module streams within Office documents. ");
-			Console.WriteLine("\n\tDocuments that only contain source code and no compiled code are more");
-			Console.WriteLine("\n\tlikely to evade AV detection and YARA rules.\n\n\t\n");
+			Console.WriteLine("\tVBA purging removes P-code from module streams within Office documents. ");
+			Console.WriteLine("\tDocuments that only contain source code and no compiled code are more");
+			Console.WriteLine("\tlikely to evade AV detection and YARA rules.\n\n");
 			Console.WriteLine(" USAGE:");
-			Console.WriteLine("\n\t-d : Document type (word, excel, publisher)");
-			Console.WriteLine("\n\t-f : Filename to VBA Purge");
-			Console.WriteLine("\n\t-m : Module within document to VBA Purge");
-			Console.WriteLine("\n\t-l : List module streams in document");
-			Console.WriteLine("\n\t-h : Show help menu.\n\n");
+			Console.WriteLine("\t-f : Filename to VBA Purge");
+			Console.WriteLine("\t-m : Module within document to VBA Purge");
+			Console.WriteLine("\t-l : List module streams in document");
+			Console.WriteLine("\t-h : Show help menu.\n");
 			Console.WriteLine(" EXAMPLES:");
 			Console.WriteLine("\n\t .\\OfficePurge.exe -d word -f .\\malicious.doc -m NewMacros");
-			Console.WriteLine("\n\t .\\OfficePurge.exe -d excel -f .\\payroll.xls -m Module1");
-			Console.WriteLine("\n\t .\\OfficePurge.exe -d publisher -f .\\donuts.pub -m ThisDocument");
-			Console.WriteLine("\n\t .\\OfficePurge.exe -d word -f .\\malicious.doc -l\n\n");
+			Console.WriteLine("\t .\\OfficePurge.exe -d excel -f .\\payroll.xls -m Module1");
+			Console.WriteLine("\t .\\OfficePurge.exe -d publisher -f .\\donuts.pub -m ThisDocument");
+			Console.WriteLine("\t .\\OfficePurge.exe -d word -f .\\malicious.doc -l\n");
 		}
 		public static List<ModuleInformation> ParseModulesFromDirStream(byte[] dirStream)
 		{
