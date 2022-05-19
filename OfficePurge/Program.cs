@@ -20,6 +20,8 @@ namespace OfficePurge
 		}
 		static void Main(string[] args)
 		{
+			string outFilename = "";
+
 			try
 			{
 				if (args.Length == 0 || args.Contains("-h"))
@@ -32,7 +34,7 @@ namespace OfficePurge
 
 				if (argDict.ContainsKey("f"))
 				{
-					filename = argDict["f"];
+					filename = Path.GetFullPath(argDict["f"]);
 				}
 				else
 				{
@@ -61,7 +63,7 @@ namespace OfficePurge
                 // Temp path to unzip OpenXML files to
                 String unzipTempPath = "";
 
-                string outFilename = Utils.getOutFilename(filename);
+                outFilename = Utils.getOutFilename(filename);
                 string oleFilename = outFilename;
 
                 // VBA Purging
@@ -73,6 +75,10 @@ namespace OfficePurge
 						if (File.Exists(outFilename)) File.Delete(outFilename);
 						File.Copy(filename, outFilename);
 						filename = outFilename;
+					}
+					else
+                    {
+						outFilename = outFilename.Replace("_PURGED", "");
 					}
 					
                     try
@@ -91,14 +97,23 @@ namespace OfficePurge
 
                         is_OpenXML = true;
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
-                        // Not OpenXML format, Maybe 97-2003 format, Make a copy
-                        if (File.Exists(outFilename)) File.Delete(outFilename);
-                        File.Copy(filename, outFilename);
-					}
+						Console.WriteLine("Input file seems to be a 97-2003 Office document (OLE)");
 
-					CompoundFile cf = new CompoundFile(oleFilename, CFSUpdateMode.Update, 0);
+						if (!list_modules)
+						{
+							// Not OpenXML format, Maybe 97-2003 format, Make a copy
+							if (File.Exists(outFilename)) File.Delete(outFilename);
+							File.Copy(filename, outFilename);
+						}
+
+                        oleFilename = outFilename;
+                    }
+
+					var mode = (list_modules) ? CFSUpdateMode.ReadOnly : CFSUpdateMode.Update;
+
+					CompoundFile cf = new CompoundFile(oleFilename, mode, 0);
 					CFStorage commonStorage = cf.RootStorage;
 
 					if (cf.RootStorage.TryGetStorage("Macros") != null)
@@ -106,12 +121,18 @@ namespace OfficePurge
 						commonStorage = cf.RootStorage.GetStorage("Macros");
 					}
 					
-					if (cf.RootStorage.TryGetStorage("_VBA_PROJECT_CUR") != null)
+					else if (cf.RootStorage.TryGetStorage("_VBA_PROJECT_CUR") != null)
 					{
 						commonStorage = cf.RootStorage.GetStorage("_VBA_PROJECT_CUR");
-					}
+                    }
 
-					var vbaStorage = commonStorage.GetStorage("VBA");
+					else if (cf.RootStorage.TryGetStorage("VBA") != null)
+                    {
+						// Publisher
+                        commonStorage = cf.RootStorage.GetStorage("VBA");
+                    }
+
+                    var vbaStorage = commonStorage.GetStorage("VBA");
 					if(vbaStorage == null)
                     {
 						throw new CFItemNotFound("Cannot find item");
@@ -272,7 +293,7 @@ namespace OfficePurge
 			{
 				Console.WriteLine("\n[!] Flags (-d), (-f), (-m) need an argument. Make sure you have provided these flags an argument.\n");
 			}
-		}
+        }
 
         public static string CreateUniqueTempDirectory()
         {
