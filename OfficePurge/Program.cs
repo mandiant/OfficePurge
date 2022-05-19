@@ -74,7 +74,6 @@ namespace OfficePurge
 					{
 						if (File.Exists(outFilename)) File.Delete(outFilename);
 						File.Copy(filename, outFilename);
-						filename = outFilename;
 					}
 					else
                     {
@@ -92,8 +91,12 @@ namespace OfficePurge
 						}
                         else if (File.Exists(Path.Combine(unzipTempPath, "xl", "vbaProject.bin"))) 
 						{ 
-							oleFilename = Path.Combine(unzipTempPath, "xl", "vbaProject.bin"); 
-						}
+							oleFilename = Path.Combine(unzipTempPath, "xl", "vbaProject.bin");
+                        }
+                        else if (File.Exists(Path.Combine(unzipTempPath, "ppt", "vbaProject.bin")))
+                        {
+                            oleFilename = Path.Combine(unzipTempPath, "ppt", "vbaProject.bin");
+                        }
 
                         is_OpenXML = true;
                     }
@@ -107,8 +110,10 @@ namespace OfficePurge
 							if (File.Exists(outFilename)) File.Delete(outFilename);
 							File.Copy(filename, outFilename);
 						}
-
-                        oleFilename = outFilename;
+						else
+						{
+							oleFilename = outFilename;
+						}
                     }
 
 					var mode = (list_modules) ? CFSUpdateMode.ReadOnly : CFSUpdateMode.Update;
@@ -128,8 +133,18 @@ namespace OfficePurge
 
 					else if (cf.RootStorage.TryGetStorage("VBA") != null)
                     {
-						// Publisher
-                        commonStorage = cf.RootStorage.GetStorage("VBA");
+						// Publisher: VBA -> VBA
+						var interimStorage = cf.RootStorage.GetStorage("VBA");
+
+						try
+						{
+							var foo = interimStorage.GetStream("dir");
+                        }
+                        catch (CFItemNotFound ex) when (ex.Message.Contains("Cannot find item"))
+                        {
+							Console.WriteLine("[.] Publisher identified.");
+							commonStorage = interimStorage;
+						}
                     }
 
                     var vbaStorage = commonStorage.GetStorage("VBA");
@@ -175,7 +190,10 @@ namespace OfficePurge
 						{
 							foreach (string mod in dontPurgeTheseModules)
 							{
-								if (vbaModule.moduleName.StartsWith(mod)) purge = false;
+								if (vbaModule.moduleName.StartsWith(mod))
+								{
+									purge = false;
+								}
 							}
 						}
 
@@ -192,6 +210,11 @@ namespace OfficePurge
 							streamBytes = Utils.RemovePcodeInModuleStream(streamBytes, vbaModule.textOffset, OG_VBACode);
 							vbaStorage.GetStream(vbaModule.moduleName).SetData(streamBytes);
 							module_found = true;
+						}
+
+						if (module_found && module.Length > 0)
+						{
+							break;
 						}
 					}
 
@@ -284,7 +307,12 @@ namespace OfficePurge
                 {
                     if (is_OpenXML)
                     {
-                        Directory.Delete(unzipTempPath, true);
+						try
+						{
+							Directory.Delete(unzipTempPath, true);
+						}
+						catch (Exception)
+						{ }
                     }
                 }
 			}

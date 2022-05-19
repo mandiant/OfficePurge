@@ -34,22 +34,28 @@ namespace OfficePurge
 			Console.WriteLine(" /  \\(  __)(  __)(  )/ __)(  __)(  _ \\/ )( \\(  _ \\ / __)(  __)");
 			Console.WriteLine("(  O )) _)  ) _)  )(( (__  ) _)  ) __/) \\/ ( )   /( (_ \\ ) _) ");
 			Console.WriteLine(" \\__/(__)  (__)  (__)\\___)(____)(__)  \\____/(__\\_) \\___/(____) v1.0");
-			Console.WriteLine("\n\n Author: Andrew Oliveau\n");
+			Console.WriteLine("\n\n Author: Andrew Oliveau, tweaked by Mariusz Banach (mgeeky)\n");
 			Console.WriteLine(" DESCRIPTION:");
 			Console.WriteLine("\n\tOfficePurge is a C# tool that VBA purges malicious Office documents. ");
 			Console.WriteLine("\tVBA purging removes P-code from module streams within Office documents. ");
 			Console.WriteLine("\tDocuments that only contain source code and no compiled code are more");
 			Console.WriteLine("\tlikely to evade AV detection and YARA rules.\n\n");
+			Console.WriteLine(" SUPPORTED:");
+			Console.WriteLine("\t- Word       (pre-2007, 2007+)");
+			Console.WriteLine("\t- Excel      (pre-2007, 2007+)");
+			Console.WriteLine("\t- Powerpoint (2007+)");
+			Console.WriteLine("\t- Publisher  (pre-2007)");
 			Console.WriteLine(" USAGE:");
 			Console.WriteLine("\t-f : Filename to VBA Purge");
 			Console.WriteLine("\t-m : Module within document to VBA Purge");
 			Console.WriteLine("\t-l : List module streams in document");
 			Console.WriteLine("\t-h : Show help menu.\n");
 			Console.WriteLine(" EXAMPLES:");
-			Console.WriteLine("\n\t .\\OfficePurge.exe -d word -f .\\malicious.doc -m NewMacros");
-			Console.WriteLine("\t .\\OfficePurge.exe -d excel -f .\\payroll.xls -m Module1");
-			Console.WriteLine("\t .\\OfficePurge.exe -d publisher -f .\\donuts.pub -m ThisDocument");
-			Console.WriteLine("\t .\\OfficePurge.exe -d word -f .\\malicious.doc -l\n");
+			Console.WriteLine("\n\t .\\OfficePurge.exe -f .\\malicious.doc -m NewMacros");
+			Console.WriteLine("\t .\\OfficePurge.exe -f .\\payroll.xls -m Module1");
+            Console.WriteLine("\t .\\OfficePurge.exe -f .\\payroll.pptm -m Module1");
+            Console.WriteLine("\t .\\OfficePurge.exe -f .\\donuts.pub -m ThisDocument");
+			Console.WriteLine("\t .\\OfficePurge.exe -f .\\malicious.doc -l\n");
 		}
 		public static List<ModuleInformation> ParseModulesFromDirStream(byte[] dirStream)
 		{
